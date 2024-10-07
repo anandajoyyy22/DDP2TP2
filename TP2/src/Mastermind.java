@@ -64,26 +64,54 @@ public class Mastermind {
         return "Hasil: " + benarWarna + " warna benar, " + benarPosisi + " posisi benar.";
     }
 
-    public int[] cekTebakan2 (String tebakan2){ 
-        int[] hasil = new int[2]; // public int[] cekTebakan2 (String tebakan2){ 
-            int benarWarna = 0;
-            int benarPosisi = 0;
     
-            for (int i = 0; i < tebakan2.length(); i++){
-                //mencari apakah karakter yang dipilih dari tebakan ada di dalam kode rahasia.
-                if(tebakan2.charAt(i) == kodeRahasia.charAt(i)){ 
-                    benarPosisi++;
-    
-                }else if (kodeRahasia.indexOf(tebakan2.charAt(i)) >= 0){
-                    benarWarna++;
-    
-                }
-    
-            }
-            hasil[0] = benarWarna;
-            hasil[1] = benarPosisi;
-            return hasil;
+
         
+            //     // Simpan hasil perhitungan ke array
+            //     hasil[0] = benarWarna;
+            //     hasil[1] = benarPosisi;
+            
+            //     return hasil;
+            // }
+
+    public int[] cekTebakan2(String tebakan) {
+        int[] hasil = new int[2];  
+        int benarWarna = 0;      
+        int benarPosisi = 0;      
+            
+        boolean[] kodePosisiBenar = new boolean[4];
+        boolean[] tebakanPosisiBenar = new boolean[4];
+            
+        //  warna dan posisi yang benar
+        for (int i = 0; i < tebakan.length(); i++) {
+            if (tebakan.charAt(i) == kodeRahasia.charAt(i)) {
+                benarPosisi++;
+                kodePosisiBenar[i] = true; 
+                tebakanPosisiBenar[i] = true; 
+        }
+                }
+            
+        //  kalo posisinya salah
+        for (int i = 0; i < tebakan.length(); i++) {
+            if (!tebakanPosisiBenar[i]) { 
+                for (int j = 0; j < kodeRahasia.length(); j++) {
+                    //  warna yang cocok tetapi di posisi yang berbeda dan belum cocok
+                    if (!kodePosisiBenar[j] && tebakan.charAt(i) == kodeRahasia.charAt(j)) {
+                        benarWarna++;
+                        kodePosisiBenar[j] = true;
+                        break;
+                    }
+                }
+            }
+        }        
+            
+        hasil[0] = benarWarna;
+        hasil[1] = benarPosisi;
+            
+        return hasil;
+    
+            
+            
 
        
         // return "Hasil: " + benarWarna + " warna benar, " + benarPosisi + "posisi benar";

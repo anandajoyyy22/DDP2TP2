@@ -56,4 +56,30 @@ public class MastermindTest {
         int[] hasil = {3, 1};
         assertArrayEquals(hasil, mastermind.cekTebakan2("HMKB"));
     }
+
+    @Test
+    public void testTebakan2WarnaBenar2PosisiSalah() {
+        Mastermind mastermind = new Mastermind();
+        mastermind.setKodeRahasia("MKHB");
+        int[] hasil = {2, 2};
+        assertArrayEquals(hasil, mastermind.cekTebakan2("KMHB"));
+    }
+
+    @Test
+    public void testTebakanWarnaBenarPosisiSalahh() {
+        Mastermind mastermind = new Mastermind();
+        mastermind.setKodeRahasia("MKMK");
+        int[] hasil = {0, 2};
+        assertArrayEquals(hasil, mastermind.cekTebakan2("MMMM"));
+    }
+
+    @Test
+    public void testTebakanWarnaBenarPosisiSalahhh() {
+        Mastermind mastermind = new Mastermind();
+        mastermind.setKodeRahasia("MKHB");
+        int[] hasil = {0, 1};
+        assertArrayEquals(hasil, mastermind.cekTebakan2("MMMM"));
+    }
+
 }
+
