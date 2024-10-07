@@ -64,6 +64,34 @@ public class Mastermind {
         return "Hasil: " + benarWarna + " warna benar, " + benarPosisi + " posisi benar.";
     }
 
+    public int[] cekTebakan2 (String tebakan2){ 
+        int[] hasil = new int[2]; // public int[] cekTebakan2 (String tebakan2){ 
+            int benarWarna = 0;
+            int benarPosisi = 0;
+    
+            for (int i = 0; i < tebakan2.length(); i++){
+                //mencari apakah karakter yang dipilih dari tebakan ada di dalam kode rahasia.
+                if(tebakan2.charAt(i) == kodeRahasia.charAt(i)){ 
+                    benarPosisi++;
+    
+                }else if (kodeRahasia.indexOf(tebakan2.charAt(i)) >= 0){
+                    benarWarna++;
+    
+                }
+    
+            }
+            hasil[0] = benarWarna;
+            hasil[1] = benarPosisi;
+            return hasil;
+        
+
+       
+        // return "Hasil: " + benarWarna + " warna benar, " + benarPosisi + "posisi benar";
+
+        // return new cekTebakan2(benarPosisi, benarWarna);    
+        
+    }
+
     // Tahap 4: Membuat main menu permainan
     /**
      * Method utama yang menjalankan permainan Mastermind. Program akan meminta
@@ -90,12 +118,14 @@ public class Mastermind {
             String tebakan = scanner.nextLine().toUpperCase();
 
             // Panggil method cekTebakan untuk memeriksa tebakan
-            String hasil = mastermind.cekTebakan(tebakan);
+            // String hasil = mastermind.cekTebakan(tebakan);
+            int[] hasil = mastermind.cekTebakan2(tebakan);
             // Tampilkan hasil cek tebakan
-            System.out.println(hasil);
+            // System.out.println(hasil);
+            System.out.println("Hasil: " + hasil[0] + " warna benar, " + hasil[1] + " posisi benar.");
 
             // Jika tebakan benar semua (4 posisi benar), pemain menang
-            if (hasil.contains("4 posisi benar")) {
+            if (hasil[1] == 4) {
                 System.out.println("Selamat, Anda menang!");
                 break; // Keluar dari loop jika menang
             }
