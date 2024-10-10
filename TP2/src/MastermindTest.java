@@ -81,5 +81,39 @@ public class MastermindTest {
         assertArrayEquals(hasil, mastermind.cekTebakan2("MMMM"));
     }
 
-}
+// Pengujian baru untuk mengecek skor pemain
+    @Test
+    public void testSkorPemain() {
+        Mastermind mastermind = new Mastermind();
+        mastermind.setKodeRahasia("MKHB");
+        
+        // Melakukan tebakan pertama dan mendapatkan hasil
+        int[] hasil1 = mastermind.cekTebakan2("KMHB"); // 2 warna benar, 2 posisi benar
+        // Melakukan tebakan kedua dan mendapatkan hasil
+        int[] hasil2 = mastermind.cekTebakan2("MKKH"); // 1 warna benar, 2 posisi benar
+        
+        // Simulasi skor pemain
+        int skorPemain = (4 - hasil1[1]) + (4 - hasil2[1]); // Tambahkan skor dari kedua tebakan
+        // Memeriksa apakah skor yang dihitung sesuai dengan ekspektasi
+        assertEquals(4, skorPemain); // Pemain seharusnya mendapat skor 2
+    }
 
+
+    // Pengujian baru untuk hadiah
+    @Test
+    public void testTampilkanHadiah() {
+        Mastermind mastermind = new Mastermind();
+        // Simulasikan menang
+        mastermind.setKodeRahasia("MKHB");
+        int[] hasil = mastermind.cekTebakan2("MKHB"); // Tebakan benar
+        assertEquals(4, hasil[1]); // Harus 4 posisi benar
+
+        // Simulasikan tampilkan hadiah
+        // Cek bahwa hadiah ditampilkan tidak menghasilkan exception
+        try {
+            mastermind.tampilkanHadiah(); // Metode untuk menampilkan hadiah
+        } catch (Exception e) {
+            fail("Hadiah tidak ditampilkan dengan benar: " + e.getMessage());
+        }
+    }
+}

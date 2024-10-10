@@ -32,15 +32,14 @@ public class Mastermind {
         this.kodeRahasia = kode.toString();
         // Kembalikan kode rahasia
         return kodeRahasia;
-
     }
 
     // Tahap 3: Implementasi cek tebakan
     /**
      * Method untuk memeriksa tebakan pengguna dan memberikan feedback
      * terkait jumlah warna yang benar dan posisi yang benar.
-     * param tebakan Tebakan dari pengguna
-     * return String Hasil cek tebakan berupa jumlah warna dan posisi yang benar
+     * @param tebakan Tebakan dari pengguna
+     * @return String Hasil cek tebakan berupa jumlah warna dan posisi yang benar
      */
     public String cekTebakan(String tebakan) {
         // Inisialisasi penghitung warna yang benar
@@ -64,16 +63,6 @@ public class Mastermind {
         return "Hasil: " + benarWarna + " warna benar, " + benarPosisi + " posisi benar.";
     }
 
-    
-
-        
-            //     // Simpan hasil perhitungan ke array
-            //     hasil[0] = benarWarna;
-            //     hasil[1] = benarPosisi;
-            
-            //     return hasil;
-            // }
-
     public int[] cekTebakan2(String tebakan) {
         int[] hasil = new int[2];  
         int benarWarna = 0;      
@@ -88,8 +77,8 @@ public class Mastermind {
                 benarPosisi++;
                 kodePosisiBenar[i] = true; 
                 tebakanPosisiBenar[i] = true; 
+            }
         }
-                }
             
         //  kalo posisinya salah
         for (int i = 0; i < tebakan.length(); i++) {
@@ -107,17 +96,23 @@ public class Mastermind {
             
         hasil[0] = benarWarna;
         hasil[1] = benarPosisi;
-            
         return hasil;
-    
-            
-            
+    }
 
-       
-        // return "Hasil: " + benarWarna + " warna benar, " + benarPosisi + "posisi benar";
-
-        // return new cekTebakan2(benarPosisi, benarWarna);    
-        
+    // Method untuk menampilkan hadiah
+    /**
+     * Method untuk menampilkan hadiah dalam bentuk seni ASCII.
+     */
+    public void tampilkanHadiah() { // Metode baru untuk menampilkan hadiah
+        System.out.println("\nSelamat! Anda mendapatkan hadiah!");
+        System.out.println("  _____");
+        System.out.println(" |     |");
+        System.out.println(" |  *  |");
+        System.out.println(" |     |");
+        System.out.println(" |_____|");
+        System.out.println("   | |");
+        System.out.println("   | |");
+        System.out.println("   |_|");
     }
 
     // Tahap 4: Membuat main menu permainan
@@ -131,45 +126,100 @@ public class Mastermind {
         Mastermind mastermind = new Mastermind();
         // Membuat Scanner untuk menerima input dari pengguna
         Scanner scanner = new Scanner(System.in);
-
+        
         // Menyapa pengguna dan mulai permainan
         System.out.println("Selamat datang di permainan Mastermind!");
-        // Generate kode rahasia
-        System.out.println( mastermind.generateKodeRahasia());
-        // Beritahu bahwa kode rahasia telah di-generate
-        System.out.println("Kode rahasia telah di-generate.");
-
-        // Loop permainan sampai pemain menang atau menyerah
+        
+        // Menanyakan jumlah pemain
+        System.out.print("Masukkan jumlah pemain: ");
+        int jumlahPemain = scanner.nextInt();
+        scanner.nextLine(); // Mengambil newline setelah nextInt
+        
+        // Array untuk menyimpan nama pemain dan skor
+        String[] namaPemain = new String[jumlahPemain];
+        int[] skorPemain = new int[jumlahPemain];
+        
+        // Minta nama masing-masing pemain
+        for (int i = 0; i < jumlahPemain; i++) {
+            System.out.print("Masukkan nama pemain " + (i + 1) + ": ");
+            namaPemain[i] = scanner.nextLine();
+        }
+        
+        // Game Loop
         while (true) {
-            // Minta pemain untuk memasukkan tebakan
-            System.out.print("Masukkan tebakan Anda (4 warna, M/K/H/B/U/O): ");
-            String tebakan = scanner.nextLine().toUpperCase();
+            // Generate kode rahasia
+            mastermind.generateKodeRahasia();
+            System.out.println("Kode rahasia telah di-generate.");
 
-            // Panggil method cekTebakan untuk memeriksa tebakan
-            // String hasil = mastermind.cekTebakan(tebakan);
-            int[] hasil = mastermind.cekTebakan2(tebakan);
-            // Tampilkan hasil cek tebakan
-            // System.out.println(hasil);
-            System.out.println("Hasil: " + hasil[0] + " warna benar, " + hasil[1] + " posisi benar.");
+            // Loop untuk setiap pemain
+            for (int i = 0; i < jumlahPemain; i++) {
+                System.out.println("\nGiliran: " + namaPemain[i]);
+                int kesempatan = 5; // Maximum attempts for each player
 
-            // Jika tebakan benar semua (4 posisi benar), pemain menang
-            if (hasil[1] == 4) {
-                System.out.println("Selamat, Anda menang!");
-                break; // Keluar dari loop jika menang
+                while (kesempatan > 0) {
+                    // Minta pemain untuk memasukkan tebakan
+                    System.out.print("Masukkan tebakan Anda (4 warna, M/K/H/B/U/O): ");
+                    String tebakan = scanner.nextLine().toUpperCase();
+
+                    // Panggil method cekTebakan untuk memeriksa tebakan
+                    int[] hasil = mastermind.cekTebakan2(tebakan);
+                    // Tampilkan hasil cek tebakan
+                    System.out.println("Hasil: " + hasil[0] + " warna benar, " + hasil[1] + " posisi benar.");
+
+                    // Tambahkan skor untuk langkah ini
+                    skorPemain[i] += (4 - hasil[1]); // Skor berkurang sesuai jumlah posisi yang benar
+
+                    // Jika tebakan benar semua (4 posisi benar), pemain menang
+                    if (hasil[1] == 4) {
+                        System.out.println("Selamat, " + namaPemain[i] + ", Anda menang!");
+                        break; // Keluar dari loop jika menang
+                    }
+
+                    // Mengurangi kesempatan
+                    kesempatan--;
+
+                    // Jika kesempatan habis
+                    if (kesempatan == 0) {
+                        System.out.println("Kesempatan Anda habis, " + namaPemain[i] + ". Kode rahasia adalah: " + mastermind.getKodeRahasia());
+                    } else {
+                        // Tanya pemain apakah ingin menyerah
+                        System.out.print("Apakah Anda ingin menyerah? (y/n): ");
+                        String menyerah = scanner.nextLine();
+                        if (menyerah.equalsIgnoreCase("y")) {
+                            break; // Keluar dari loop tebakan untuk pemain ini
+                        }
+                    }
+                }
             }
 
-            // Tanya pemain apakah ingin mencoba lagi
-            System.out.print("Apakah Anda ingin mencoba lagi? (y/n): ");
-            String cobaLagi = scanner.nextLine();
-            // Jika pemain tidak ingin mencoba lagi, akhiri permainan
-            if (cobaLagi.equalsIgnoreCase("n")) {
+            // Tanya pemain apakah ingin bermain lagi
+            System.out.print("\nApakah Anda ingin bermain lagi? (y/n): ");
+            String mainLagi = scanner.nextLine();
+            if (mainLagi.equalsIgnoreCase("n")) {
                 System.out.println("Terima kasih telah bermain.");
-                break; // Keluar dari loop jika pemain menyerah
-
+                break; // Keluar dari loop permainan
             }
         }
 
-        // Tutup Scanner setelah selesai digunakan
+        // Tampilkan skor setiap pemain
+        System.out.println("\nSkor Akhir:");
+        int maxSkor = 0;
+        String pemenang = "";
+
+        for (int i = 0; i < jumlahPemain; i++) {
+            System.out.println(namaPemain[i] + ": " + skorPemain[i] + " poin");
+            if (skorPemain[i] > maxSkor) {
+                maxSkor = skorPemain[i];
+                pemenang = namaPemain[i];
+            }
+        }
+
+        // Tampilkan pemenang
+        System.out.println("\nPemenang: " + pemenang + " dengan " + maxSkor + " poin!");
+        // Tampilkan hadiah untuk pemenang
+        mastermind.tampilkanHadiah();
+
+        // Tutup scanner
         scanner.close();
     }
 
@@ -182,10 +232,10 @@ public class Mastermind {
         return kodeRahasia;
     }
 
-    // Tahap 3: Setter untuk kode rahasia (untuk keperluan testing)
+    // Tahap 3: Setter untuk kode rahasia (untuk keperluan testing atau tampilan)
     /**
-     * Method untuk mengatur kode rahasia secara manual (digunakan untuk testing).
-     * @param kodeRahasia Kode rahasia yang ingin diset
+     * Method untuk mengatur kode rahasia secara manual (untuk keperluan testing).
+     * @param kodeRahasia Kode rahasia yang akan diatur
      */
     public void setKodeRahasia(String kodeRahasia) {
         this.kodeRahasia = kodeRahasia;
